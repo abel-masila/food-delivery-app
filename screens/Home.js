@@ -12,7 +12,7 @@ import {
 
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
-const Home = () => {
+const Home = ({navigation}) => {
   // Dummy Datas
 
   const initialCurrentLocation = {
@@ -373,14 +373,12 @@ const Home = () => {
           />
         </TouchableOpacity>
         <View
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <View
-            // eslint-disable-next-line react-native/no-inline-styles
             style={{
               backgroundColor: COLORS.lightGray3,
               width: '70%',
@@ -432,7 +430,7 @@ const Home = () => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor:
-                selectedCategory?.id == item.id
+                selectedCategory?.id === item.id
                   ? COLORS.white
                   : COLORS.lightGray,
             }}>
@@ -450,7 +448,7 @@ const Home = () => {
             style={{
               marginTop: SIZES.padding,
               color:
-                selectedCategory?.id == item.id ? COLORS.white : COLORS.black,
+                selectedCategory?.id === item.id ? COLORS.white : COLORS.black,
               ...FONTS.body5,
             }}>
             {item.name}
@@ -458,6 +456,7 @@ const Home = () => {
         </TouchableOpacity>
       );
     };
+
     return (
       <View style={{padding: SIZES.padding * 2}}>
         <Text style={{...FONTS.h1}}>Main</Text>
@@ -475,10 +474,93 @@ const Home = () => {
       </View>
     );
   }
+  function renderRestaurantList() {
+    const renderItem = ({item}) => (
+      <TouchableOpacity
+        style={{marginBottom: SIZES.padding * 2}}
+        onPress={() =>
+          navigation.navigate('Resturant', {item, currentLocation})
+        }>
+        <View style={{marginBottom: SIZES.padding * 2}}>
+          <Image
+            source={item.photo}
+            resizeMode="cover"
+            style={{width: '100%', height: 200, borderRadius: SIZES.radius}}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              height: 50,
+              width: SIZES.width * 0.3,
+              backgroundColor: COLORS.white,
+              borderTopRightRadius: SIZES.radius,
+              borderBottomLeftRadius: SIZES.radius,
+              alignItems: 'center',
+              justifyContent: 'center',
+              ...styles.shadow,
+            }}>
+            <Text style={{...FONTS.h4}}>{item.duration}</Text>
+          </View>
+        </View>
+        <Text style={{...FONTS.body2}}>{item.name}</Text>
+        <View style={{marginTop: SIZES.padding, flexDirection: 'row'}}>
+          <Image
+            source={icons.star}
+            style={{
+              height: 20,
+              width: 20,
+              tintColor: COLORS.primary,
+              marginRight: 10,
+            }}
+          />
+          <Text style={{...FONTS.body3}}>{item.rating}</Text>
+          {/* Categories */}
+          <View style={{marginLeft: 10, flexDirection: 'row'}}>
+            {item.categories.map((catId) => {
+              return (
+                <View style={{flexDirection: 'row'}} key={catId}>
+                  <Text style={{...FONTS.body3}}>
+                    {getCategoryNameById(catId)}
+                  </Text>
+                  <Text style={{...FONTS.h3, color: COLORS.darkgray}}> . </Text>
+                </View>
+              );
+            })}
+            {[1, 2, 3].map((priceRating) => (
+              <Text
+                key={priceRating}
+                style={{
+                  ...FONTS.body3,
+                  color:
+                    priceRating <= item.priceRating
+                      ? COLORS.black
+                      : COLORS.darkgray,
+                }}>
+                $
+              </Text>
+            ))}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+    return (
+      <FlatList
+        data={restaurants}
+        keyExtractor={(item) => `${item.id}`}
+        renderItem={renderItem}
+        contentContainerStyle={{
+          paddingHorizontal: SIZES.padding * 2,
+          paddingBottom: 30,
+        }}
+      />
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
       {renderMainCategories()}
+      {renderRestaurantList()}
     </SafeAreaView>
   );
 };
