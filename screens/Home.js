@@ -78,7 +78,7 @@ const Home = ({navigation}) => {
 
   // price rating
   const affordable = 1;
-  const fairPrice = 2;
+  //const fairPrice = 2;
   const expensive = 3;
 
   const restaurantData = [
@@ -346,9 +346,11 @@ const Home = ({navigation}) => {
   }
 
   function getCategoryNameById(id) {
-    let category = categories.filter((a) => a.id == id);
+    let category = categories.filter((a) => a.id === id);
 
-    if (category.length > 0) return category[0].name;
+    if (category.length > 0) {
+      return category[0].name;
+    }
 
     return '';
   }
@@ -414,7 +416,7 @@ const Home = ({navigation}) => {
             padding: SIZES.padding,
             paddingBottom: SIZES.padding * 2,
             backgroundColor:
-              selectedCategory?.id == item.id ? COLORS.primary : COLORS.white,
+              selectedCategory?.id === item.id ? COLORS.primary : COLORS.white,
             borderRadius: SIZES.radius,
             alignItems: 'center',
             justifyContent: 'center',

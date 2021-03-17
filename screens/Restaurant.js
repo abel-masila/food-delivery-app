@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  FlatList,
   Animated,
 } from 'react-native';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 
-import {icons, images, SIZES, COLORS, FONTS} from '../constants';
+import {icons, SIZES, COLORS, FONTS} from '../constants';
 
 const Restaurant = ({route, navigation}) => {
   const [restaurant, setRestaurant] = React.useState(null);
@@ -30,7 +29,7 @@ const Restaurant = ({route, navigation}) => {
 
   function editOrder(action, menuId, price) {
     let orderList = orderItems.slice();
-    let item = orderList.filter((a) => a.menuId == menuId);
+    let item = orderList.filter((a) => a.menuId === menuId);
 
     if (action === '+') {
       if (item.length > 0) {
@@ -62,7 +61,7 @@ const Restaurant = ({route, navigation}) => {
   }
 
   function getOrderQty(menuId) {
-    let orderItem = orderItems.filter((a) => a.menuId == menuId);
+    let orderItem = orderItems.filter((a) => a.menuId === menuId);
 
     if (orderItem.length > 0) {
       return orderItem[0].qty;
